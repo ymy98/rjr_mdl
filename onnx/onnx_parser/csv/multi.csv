@@ -1,0 +1,35 @@
+Op Type,Input Shape,Attribute
+Conv,"[(1, 160, 40, 23)]","{'dilations': [[1, 1]], 'kernel_shape': [[7, 7], [3, 3], [1, 1], [5, 5], [16, 16]], 'pads': [[3, 3, 3, 3], [1, 1, 1, 1], [0, 0, 0, 0], [2, 2, 2, 2]], 'strides': [[2, 2], [1, 1], [16, 16]], 'output_channel': [8, 1280], 'input_channel': [1, 1152]}"
+Relu,"[(1, 240, 1, 1)]",Null
+MaxPool,"[(1, 64, 640, 360)]","{'kernel_shape': [[3, 3]], 'pads': [[1, 1, 1, 1]], 'strides': [[2, 2]]}"
+Add,"[(1, 160, 40, 23), (1, 160, 40, 23)]",Null
+GlobalAveragePool,"[(1, 960, 40, 23)]",Null
+Flatten,"[(1, 960, 1, 1)]",Null
+Gemm,"[(1, 1280)]","{'weight': [1000, 1000, 512, 1280, 1024, 576, 192, 960]}"
+Constant,Null,Null
+Ceil,[()],Null
+Sub,"[(), (1,)]",Null
+Mul,"[(1, 1280), (1, 1280)]",Null
+Clip,"[(1, 1280, 40, 23), (), ()]",Null
+Div,"[(), ()]",Null
+Cast,"[(8,)]",Null
+Unsqueeze,[()],{'axes': [[0]]}
+Concat,"[(4,), (4,)]",Null
+Shape,"[(4,)]",Null
+Gather,"[(1,), (1,)]",Null
+ConstantOfShape,"[(1,)]",Null
+Reshape,"[(2, 4), (1,)]",Null
+Slice,"[(4, 2), (1,), (1,), (1,), (1,)]",Null
+Transpose,"[(4, 2)]","{'perm': [[1, 0], [0, 2, 1], [0, 2, 1, 3], [0, 2, 3, 1]]}"
+Pad,"[(1, 672, 80, 45), (8,), ()]",Null
+HardSigmoid,"[(1, 1280)]",Null
+Equal,"[(3,), (3,)]",Null
+Where,"[(3,), (3,), (3,)]",Null
+Expand,"[(3,)]",Null
+ReduceMean,"[(1, 198, 192)]",{'axes': [[-1]]}
+Pow,"[(1, 198, 192), ()]",Null
+Sqrt,"[(1, 198, 1)]",Null
+MatMul,"[(1, 198, 768)]",Null
+Softmax,"[(1, 3, 198, 198)]",Null
+Erf,"[(1, 198, 768)]",Null
+Tanh,"[(1, 192)]",Null
