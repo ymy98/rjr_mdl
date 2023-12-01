@@ -31,7 +31,7 @@ cnn_model_dict = {
     
     # f'yolov5n':                   torch.hub.load("ultralytics/yolov5", "yolov5n"),
     # f'yolov5s':                   torch.hub.load("ultralytics/yolov5", "yolov5s"),
-    f'yolov5m':                   torch.hub.load("ultralytics/yolov5", "yolov5m"),
+    # f'yolov5m':                   torch.hub.load("ultralytics/yolov5", "yolov5m"),
     # f'yolov5l':                   torch.hub.load("ultralytics/yolov5", "yolov5l"),
 
     # f'resnext50_32x4d' :          torchvision.models.resnext50_32x4d(pretrained=True) ,
@@ -46,7 +46,7 @@ cnn_model_dict = {
 transformer_model_dict = {
     # f'detr-resnet-50' :               transformers.DetrModel.from_pretrained("facebook/detr-resnet-50"),
     # f'vit_mae_base'   :               transformers.ViTMAEModel.from_pretrained("facebook/vit-mae-base"),
-    # f'swin-tiny-patch4-window7':      transformers.SwinModel.from_pretrained("microsoft/swin-tiny-patch4-window7-224"),
+    f'swin-tiny-patch4-window7':      transformers.SwinModel.from_pretrained("microsoft/swin-tiny-patch4-window7-224"),
     # f'swin-small-patch4-window7':     transformers.SwinModel.from_pretrained("microsoft/swin-small-patch4-window7-224"),
     # f'swin-base-patch4-window7':      transformers.SwinModel.from_pretrained("microsoft/swin-base-patch4-window7-224"),
     # f'deit-base-distilled-patch16':   transformers.DeiTModel.from_pretrained("facebook/deit-base-distilled-patch16-224"),
@@ -62,15 +62,15 @@ input_1080p = torch.rand(1,3,1920,1080)
 
 if __name__ == '__main__':
     # Configuration
-    dummy_input = input_720p
-    model_dict  = cnn_model_dict
-    onnx_suffix = '_720p'
+    dummy_input = input_224p
+    model_dict  = transformer_model_dict
+    onnx_suffix = '_224p'
 
     if not os.path.exists('onnx_repo'): os.mkdir('onnx_repo')
 
     for onnx_name, model in model_dict.items():
         if 'yolo' in onnx_name:     dummy_input = torch.rand(1,3,int(np.ceil(dummy_input.shape[2]/32))*32, int(np.ceil(dummy_input.shape[3]/32)*32))
-        file_name = f'{onnx_name}{dummy_input.shape[2]}x{dummy_input.shape[3]}.onnx'
+        file_name = f'{onnx_name}_{dummy_input.shape[2]}x{dummy_input.shape[3]}.onnx'
         model_path = os.path.join(root_path, file_name)
         
         torch.onnx.export(model, dummy_input, model_path, input_names=['input'], output_names=['output'],do_constant_folding=True)
